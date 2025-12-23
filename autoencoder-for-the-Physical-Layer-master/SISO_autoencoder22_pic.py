@@ -10,7 +10,7 @@ import random as rd
 import matplotlib.pyplot as plt
 
 # ===== 系统参数 =====
-k = 2
+k = 8
 n = 2
 M = 2 ** k
 R = k / n
@@ -23,7 +23,7 @@ def BER(y_true, y_pred):
 eye_matrix = np.eye(M)
 
 # ===== 生成测试数据 =====
-x_try = np.tile(eye_matrix, (250000, 1))   # (1000000, 4)
+x_try = np.tile(eye_matrix, (10000, 1))   # 减少重复次数以避免内存溢出
 rd.shuffle(x_try)
 print(x_try.shape)
 
@@ -32,8 +32,7 @@ ER = []
 
 # ===== ⭐ 安全加载模型（关键修复点）=====
 autoencoder = load_model(
-    r'C:\Users\33958\Downloads\autoencoder-for-the-Physical-Layer-master'
-    r'\autoencoder-for-the-Physical-Layer-master\autoencoder22.h5',
+    r'D:\00_Course\00_ComSys\08_SmartComm\Homework\autoencoder-for-the-Physical-Layer-master\autoencoder22.h5',
     custom_objects={
         'K': K,
         'BER': BER

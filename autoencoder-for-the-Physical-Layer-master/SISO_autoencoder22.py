@@ -12,7 +12,7 @@ import random as rd
 import matplotlib.pyplot as plt 
 
 # 初始化通信系统参数
-k = 2  # 每个符号携带的信息比特数
+k = 8  # 每个符号携带的信息比特数
 n = 2  # 编码后的信号维度（调制符号的维度，此处为2D）
 M = 2**k  # 调制阶数（可能的符号数量），2^2=4（类似QPSK调制）
 R = k/n  # 码率（信息比特数/传输符号维度），此处为1
@@ -84,7 +84,7 @@ encoder = Model(inputs=input_sys, outputs=encoded)
 autoencoder.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['binary_accuracy', BER])  
   
 # 训练自编码器：输入训练数据x_train，目标输出也是x_train（自编码器重构输入），训练200个epoch，使用测试集验证
-hist = autoencoder.fit(x_train, x_train, epochs=200, validation_data=(x_test, x_test))# 未指定batch_size，使用默认值
+hist = autoencoder.fit(x_train, x_train, epochs=15, validation_data=(x_test, x_test))# 未指定batch_size，使用默认值
 
 # （注释）计算误码个数的代码：
 # 用编码器编码验证数据

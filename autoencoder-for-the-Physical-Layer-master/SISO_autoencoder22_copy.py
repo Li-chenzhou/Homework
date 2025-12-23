@@ -19,8 +19,8 @@ tf_random.set_seed(3)  # TF2.x的随机种子
 
 
 # 初始化参数
-k = 2  # 编码前的比特数（每个符号携带的比特数）
-n = 2  # 编码后的信号维度（调制符号的维度）
+k = 4  # 编码前的比特数（每个符号携带的比特数）
+n = 4  # 编码后的信号维度（调制符号的维度）
 M = 2**k  # 调制阶数（可能的符号数量），此处2^2=4，类似QPSK
 R = k/n  # 码率（信息比特数/传输符号维度），此处2/2=1
 
@@ -76,8 +76,10 @@ encoded = Lambda(lambda x: np.sqrt(n) * K.l2_normalize(x, axis=1))(encoded)
 encoded_noise = Add()([encoded, input_noise]) 
 
 # 解码器部分（接收端）
-# 全连接层：将含噪声的n维信号映射到M维，使用relu激活函数
-decoded = Dense(M, activation='relu')(encoded_noise)
+# 全连接层：将含噪声的n维信号映射到2*M维，使用relu激活函数
+decoded = Dense(2*M, activation='relu')(encoded_noise)
+# 全连接层：将2*M维映射到M维，使用relu激活函数
+decoded = Dense(M, activation='relu')(decoded)
 # 全连接层：将M维映射回M维，使用softmax激活函数（输出符号的概率分布）
 decoded = Dense(M, activation='softmax')(decoded)
 
